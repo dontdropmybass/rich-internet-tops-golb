@@ -1,0 +1,10 @@
+{
+  "posts": [
+    {
+      "title": "blog init",
+      "body": "this is the very first blog post!",
+      "createdOn": "2017-03-14",
+      "id": 1
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+@import url("https://fonts.googleapis.com/css?family=Indie+Flower|Rubik+Mono+One");
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons");
+.single-post {
+
+}
+.post-title {
+    font-family: 'Rubik Mono One', sans-serif;
+}
+.post-body {
+    font-family: 'Indie Flower', cursive, serif;
+    color: black;
+    text-align: left;
+}
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+
+main {
+    flex: 1 0 auto;
+}

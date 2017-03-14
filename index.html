@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Alexander Cochrane">
+
+    <title>Please give me 100%</title>
+
+    <!-- Icon/Favicon things -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/icons/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/icons/favicon-16x16.png" sizes="16x16">
+    <link rel="manifest" href="/icons/manifest.json">
+    <link rel="mask-icon" href="/icons/safari-pinned-tab.svg" color="#f24236">
+    <link rel="shortcut icon" href="/icons/favicon.ico">
+
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="/icons/mstile-144x144.png">
+    <meta name="msapplication-config" content="/icons/browserconfig.xml">
+    <meta name="theme-color" content="#f24236">
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <!-- Materialize -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/js/materialize.min.js"></script>
+
+    <link rel="stylesheet" href="style.css"/>
+
+</head>
+
+<body id="page-top">
+    <div class="navbar-fixed">
+        <nav class="blue white-text">
+            <div class="nav-wrapper">
+                <a href="#" class="brand-logo">Tops Golb</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a id="new-button" href="#add">Add new post</a></li>
+                    <li><a href="https://github.com/dontdropmybass/rich-internet-tops-golb">Fork this project on Github!</a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <section id="add" class="col s12 card" hidden>
+        <div class="card-content">
+            <div class="card-title">Add new post:</div>
+            <div class="row input-field validate">
+                <input id="add-title" type="text"/>
+                <label for="add-title">Title</label>
+            </div>
+            <div class="row input-field validate">
+                <textarea id="add-body"></textarea>
+                <label for="add-body">Body</label>
+            </div>
+            <div class='row right'>
+                <a id="save-new" class='btn-floating fab waves-effect waves-light green'>
+                    <i class='material-icons'>save</i>
+                </a>
+            </div>
+        </div>
+    </section>
+    <main>
+        <header>
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-7">
+                        <div class="header-content">
+                            <div class="header-content-inner">
+                                <h1>Tops Golb: basically just a JSON stream-reader!</h1>
+                                <div id="spinner" hidden>
+                                    <div class="preloader-wrapper big active">
+                                        <div class="spinner-layer spinner-blue">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div><div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-red">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div><div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-yellow">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div><div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                        </div>
+
+                                        <div class="spinner-layer spinner-green">
+                                            <div class="circle-clipper left">
+                                                <div class="circle"></div>
+                                            </div><div class="gap-patch">
+                                            <div class="circle"></div>
+                                        </div><div class="circle-clipper right">
+                                            <div class="circle"></div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+
+        <section id="blog-posts" hidden>
+            <div class="container col s12">
+                <div class="row">
+                    <div class="input-field col s12 m6">
+                        <select id="sortBy">
+                            <option value="title">Title</option>
+                            <option value="body">Text</option>
+                            <option value="createdOn" selected>Date</option>
+                        </select>
+                        <label for="sortBy">Sort By</label>
+                    </div>
+                    <div class="input-field col s12 m6">
+                        <select id="orderBy">
+                            <option value="ASC" selected>Ascending</option>
+                            <option value="DESC">Descending</option>
+                        </select>
+                        <label for="orderBy">Order</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <h2 class="section-heading">Blog Posts:</h2>
+                        <div id="blog-post-area">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="blue white-text page-footer">
+        <div class="footer-copyright">
+            <div class="container">
+                © 2017 Alexander Cochrane
+                <a class="grey-text text-lighten-2 right" href="http://materializecss.com">Framework by Materialize</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <h4>Delete confirmation</h4>
+            <p>Are you sure you want to delete?</p>
+        </div>
+        <div class="modal-footer">
+            <a id="delete-confirm" href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Yes</a>
+            <a id="delete-cancel" href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">No</a>
+        </div>
+    </div>
+    <div id="delete-failed" class="modal">
+        <div class="modal-content">
+            <h4>Delete Failed</h4>
+            <p id="delete-fail-reason"></p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-orange btn-flat">Ok</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
