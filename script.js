@@ -2,50 +2,60 @@ var blogposts;
 var sortBy = "createdOn";
 var order = "ASC";
 function edit(i) {
-    for (var n = 0; n < blogposts.length; n++) {
-        if (i!=n) {
-            $("#editArea"+n).hide();
+    $("#edit-modal").modal('open');
+    $("#edit-body").val(blogposts[i].body);
+    $("#edit-title").val(blogposts[i].title);
+    $("#edit-save").click(function() {
+        if ($("#edit-title").val()==""||$("#edit-body").val()=="") {
+            Materialize.toast("Make sure all your fields have text in them!", 4000);
         }
-    }
-    $("#editArea"+i).toggle();
-}
-function save(i) {
-    var post = blogposts[i];
-    post.body = $("#body"+i).val();
-    post.title = $("#title"+i).val();
-    $.when(
-        $.ajax({
-            url: "http://localhost:3000/posts/"+post.id,
-            type: "PATCH",
-            contentType: "application/json",
-            data: JSON.stringify(post)
-        })
-    )
-    .done(function() {
-        loadBlogPosts();
-    })
-    .fail(function() {
-        $("<div class='card card-content'>Failed to update post.</div>");
+        else {
+            var post = blogposts[i];
+            post.body = $("#edit-body").val();
+            post.title = $("#edit-title").val();
+            $("#edit-modal").modal("close");
+            $("#spinner").show();
+            $.when(
+                $.ajax({
+                    url: "http://localhost:3000/posts/"+post.id,
+                    type: "PATCH",
+                    contentType: "application/json",
+                    data: JSON.stringify(post)
+                })
+            )
+                .done(function() {
+                    $("#spinner").hide();
+                    loadBlogPosts();
+                })
+                .fail(function(e) {
+                    $("#edit-fail-reason").text("Edit failed.");
+                    console.log(e);
+                    $("#edit-failed").modal('open');
+                    $("#spinner").hide();
+                });
+        }
+
     });
-    $("#editArea"+i).hide();
-}
-function deletePost(i) {
-    $("#delete-modal").modal('open');
-    $("#delete-confirm").click( function() {
-        $("#spinner").show();
-        $.when($.ajax({url: "http://localhost:3000/posts/"+blogposts[i].id, type: "DELETE"}))
-            .done(function() {
-                $("#spinner").hide();
-                $("#editArea"+i).hide();
-                loadBlogPosts();
-            })
-            .fail(function(e) {
-                $("#spinner").hide();
-                $("#delete-fail-reason").html(e);
-                $("#delete-failed").modal("show");
-            })
+    $("#edit-delete").click(function() {
+        $("#delete-modal").modal('open');
+        $("#delete-confirm").click( function() {
+            $("#spinner").show();
+            $.when($.ajax({url: "http://localhost:3000/posts/"+blogposts[i].id, type: "DELETE"}))
+                .done(function() {
+                    $("#spinner").hide();
+                    $("#editArea"+i).hide();
+                    loadBlogPosts();
+                })
+                .fail(function(e) {
+                    $("#spinner").hide();
+                    $("#delete-fail-reason").html(e);
+                    $("#delete-failed").modal("show");
+                })
+        });
     });
+    Materialize.updateTextFields();
 }
+
 function loadBlogPosts() {
     $("#spinner").show();
     $("#blog-posts").hide();
@@ -62,7 +72,7 @@ function loadBlogPosts() {
                                 "<div class='card-content'>"+
                                     "<span class='card-title'>"+
                                         data[i].title+
-                                        "<div class='chip'>Created on: "+
+                                        "<div class='chip right'>Created on: "+
                                             data[i].createdOn+
                                         "</div>"+
                                     "</span>"+
@@ -70,24 +80,6 @@ function loadBlogPosts() {
                                     "<p>"+data[i].body+"</p>"+
                                 "</div>"+
                             "</div>"+
-                        "</div>"+
-                    "</div>"+
-                    "<div id='editArea"+i+"' class='col s12' hidden>"+
-                        "<div class='row input-field validate'>"+
-                            "<input id='title"+i+"' value='"+data[i].title+"' type='text'/>"+
-                            "<label for='title"+i+"' class='active'>Title</label>"+
-                        "</div>"+
-                        "<div class='row input-field validate'>"+
-                            "<textarea id='body"+i+"'>"+data[i].body+"</textarea>"+
-                            "<label for='body"+i+"' class='active'>Body</label>"+
-                        "</div>"+
-                        "<div class='row right'>"+
-                            "<a onclick='save("+i+")' class='btn-floating fab waves-effect waves-light green'>"+
-                                "<i class='material-icons'>save</i>"+
-                            "</a>"+
-                            "<a onclick='deletePost("+i+")' class='btn-floating fab waves-effect waves-light red'>"+
-                                "<i class='material-icons'>delete</i>"+
-                            "</a>"+
                         "</div>"+
                     "</div>"
                 );
@@ -98,45 +90,65 @@ function loadBlogPosts() {
             $("#spinner").hide();
             $("<div><p>error.message</p></div>").dialog();
         });
+    Materialize.updateTextFields();
 }
 
 function saveNew() {
-    $("#spinner").show();
-    var now = new Date();
-    var monthNums = ["01","02","03","04","05","06","07","08","09","10","11","12"];
-    var today = now.getFullYear() + "-" + monthNums[now.getMonth()] + "-" + now.getDate();
-    var post = {
-        "title": $("#add-title").val(),
-        "body": $("#add-body").val(),
-        "createdOn": today
-    };
-    $.when($.ajax({
-        url: "http://localhost:3000/posts",
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify(post)
-    }))
-        .done(function() {
-            $("#spinner").hide();
-            $("#add").hide();
-            loadBlogPosts();
-        })
-        .fail(function(error) {
-            $("#spinner").hide();
-            alert(error);
-        });
-
+    if ($("#add-body").val()==""||$("#add-title").val()=="") {
+        Materialize.toast("Make sure all your fields have text in them!", 4000);
+    }
+    else {
+        $("#spinner").show();
+        var now = new Date();
+        var monthNums = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+        var today = now.getFullYear() + "-" + monthNums[now.getMonth()] + "-" + now.getDate();
+        var post = {
+            "title": $("#add-title").val(),
+            "body": $("#add-body").val(),
+            "createdOn": today
+        };
+        $.when($.ajax({
+            url: "http://localhost:3000/posts",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(post)
+        }))
+            .done(function() {
+                $("#spinner").hide();
+                $("#add").hide();
+                loadBlogPosts();
+            })
+            .fail(function(error) {
+                $("#spinner").hide();
+                alert(error);
+            });
+    }
 }
 
 $(function () {
     $('select').material_select();
+
     loadBlogPosts();
+
     $('select').change(function () {
         sortBy = $("#sortBy").val();
         order = $("#orderBy").val();
         loadBlogPosts();
     });
+
     $('.modal').modal();
-    $("#new-button").click(function(){$("#add").toggle();});
-    $("#save-new").click(function(){saveNew();});
+
+    $("#new-button").click(function() {
+        $("#add").modal('open');
+        Materialize.updateTextFields();
+    });
+
+    $("#save-new").click(function() {
+        saveNew();
+    });
+
+    $(".button-collapse").click(function() {
+        $("#add").modal('open');
+        Materialize.updateTextFields();
+    });
 });

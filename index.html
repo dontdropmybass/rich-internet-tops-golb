@@ -41,6 +41,7 @@
         <nav class="blue white-text">
             <div class="nav-wrapper">
                 <a href="#" class="brand-logo">Tops Golb</a>
+                <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">add</i></a>
                 <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li><a id="new-button" href="#add">Add new post</a></li>
                     <li><a href="https://github.com/dontdropmybass/rich-internet-tops-golb">Fork this project on Github!</a></li>
@@ -48,24 +49,7 @@
             </div>
         </nav>
     </div>
-    <section id="add" class="col s12 card" hidden>
-        <div class="card-content">
-            <div class="card-title">Add new post:</div>
-            <div class="row input-field validate">
-                <input id="add-title" type="text"/>
-                <label for="add-title">Title</label>
-            </div>
-            <div class="row input-field validate">
-                <textarea id="add-body"></textarea>
-                <label for="add-body">Body</label>
-            </div>
-            <div class='row right'>
-                <a id="save-new" class='btn-floating fab waves-effect waves-light green'>
-                    <i class='material-icons'>save</i>
-                </a>
-            </div>
-        </div>
-    </section>
+
     <main>
         <header>
             <div class="container">
@@ -176,6 +160,7 @@
             <a id="delete-cancel" href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">No</a>
         </div>
     </div>
+
     <div id="delete-failed" class="modal">
         <div class="modal-content">
             <h4>Delete Failed</h4>
@@ -185,6 +170,53 @@
             <a href="#!" class=" modal-action modal-close waves-effect waves-orange btn-flat">Ok</a>
         </div>
     </div>
+    <div id="edit-failed" class="modal">
+        <div class="modal-content">
+            <h4>Edit Failed</h4>
+            <p id="edit-fail-reason"></p>
+        </div>
+        <div class="modal-footer">
+            <a href="#!" class=" modal-action modal-close waves-effect waves-orange btn-flat">Ok</a>
+        </div>
+    </div>
+
+    <div id="edit-modal" class="modal">
+        <div class="modal-content">
+            <h4>Edit Blog Post:</h4>
+            <div class='row input-field validate'>
+                <input id="edit-title" type='text'/>
+                <label for="edit-title" class="active">Title</label>
+            </div>
+            <div class='row input-field validate'>
+                <textarea id='edit-body'></textarea>
+                <label for="edit-body" class="active">Body</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a id="edit-delete" href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Delete</a>
+            <a id="edit-save" href="#!" class=" modal-action waves-effect waves-green btn-flat">Save</a>
+            <a href="#!" class=" modal-action modal-close waves-effect waves-yellow btn-flat">Cancel</a>
+        </div>
+    </div>
+
+    <div id="add" class="modal">
+        <div class="modal-content">
+            <h4>New Blog Post:</h4>
+            <div class='row input-field validate'>
+                <input id="add-title" type='text'/>
+                <label for="add-title" class='active'>Title</label>
+            </div>
+            <div class='row input-field validate'>
+                <textarea id='add-body'></textarea>
+                <label for="add-body" class='active'>Body</label>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <a id="save-new" href="#!" class=" modal-action waves-effect waves-green btn-flat">Save</a>
+            <a href="#!" class=" modal-action modal-close waves-effect waves-yellow btn-flat">Cancel</a>
+        </div>
+    </div>
+
 
     <script src="script.js"></script>
 
